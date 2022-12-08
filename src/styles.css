@@ -1,0 +1,40 @@
+/* You can add global styles to this file, and also import other style files */
+html {
+  background: url('/assets/img/start-background.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  font-family: Helvetica, sans-serif;
+}
+
+.start-section {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.start-title {
+  color: whitesmoke;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.round-time-bar div {
+  height: 5px;
+  background: linear-gradient(to bottom, red, #900);
+}
+@keyframes roundtime {
+  to {
+    /* More performant than animating `width` */
+    transform: scaleX(0);
+  }
+}
+.round-time-bar[data-style="smooth"] div {
+  animation: roundtime calc(var(--duration) * 1s) linear forwards;
+  transform-origin: left center;
+}
