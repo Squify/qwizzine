@@ -1,6 +1,12 @@
 <section class="start-section">
-  <div class="start-title"><h2>nom du truc</h2></div>
+  <ul *ngIf="scoreboard.length > 0">
+    <li *ngFor="let score of scoreboard">{{ score }}</li>
+  </ul>
+
+  <div class="start-title"><h2>Testez votre culture cinématographique</h2></div>
   <div class="start-button">
-    <button routerLink="quizz">Démarrer le quizz</button>
+    <button class="text-white py-2 px-4 rounded" routerLink="quizz">
+      Commencer
+    </button>
   </div>
 </section>

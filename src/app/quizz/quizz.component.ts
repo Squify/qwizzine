@@ -3,7 +3,7 @@ import {Movie} from "../interfaces/movie";
 import {MoviesService} from "../services/movies/movies.service";
 import {People} from "../interfaces/people";
 import {Router} from "@angular/router";
-import {timer} from "rxjs";
+import {Subscription, timer} from "rxjs";
 
 @Component({
   selector: 'app-quizz',
@@ -12,13 +12,13 @@ import {timer} from "rxjs";
 })
 export class QuizzComponent implements OnInit {
 
-  movies: Movie[] = []
-  currentMovie: Movie | undefined;
   peoples: People[] = []
   currentPeople: People | undefined;
+  currentMovie: Movie | undefined;
 
   counter: number = 15
   timeLeft: number = 0
+  timerSubscription: Subscription | undefined
 
   constructor(
     private moviesService: MoviesService,
@@ -33,9 +33,9 @@ export class QuizzComponent implements OnInit {
 
   // Set a timer for a duration of n seconds
   startTimer() {
-    timer(0, 1000).subscribe(n => {
+    this.timerSubscription = timer(0, 1000).subscribe(n => {
       if (n > this.counter)
-        console.log()
+        this.saveScoreAndLeave()
       else
         this.timeLeft = n
     });
@@ -43,7 +43,7 @@ export class QuizzComponent implements OnInit {
 
   // Reset the actor and movie that are chose to be guessed
   pickNewGuess() {
-    if (Math.floor(Math.random() * (3 - 1) + 1) === 1) {
+    if (Math.floor(Math.random() * (4 - 1) + 1) === 1) {
       this.getRandomPopularPeople()
       this.getRandomPopularMovies()
     } else {
@@ -51,17 +51,17 @@ export class QuizzComponent implements OnInit {
     }
   }
 
-  // Chose a actor in a list of popular people
+  // Chose an actor in a list of popular people
   getRandomPopularPeople() {
     this.moviesService.getPopularPeople(Math.floor(Math.random() * (200 - 1) + 1)).subscribe(value =>
-        this.currentPeople = value.results[Math.floor(Math.random() * (20 - 1) + 1)]
+      this.currentPeople = value.results[Math.floor(Math.random() * (20 - 1) + 1)]
     )
   }
 
   // Chose a movie in a list of popular movies
   getRandomPopularMovies() {
     this.moviesService.getPopularMovies(Math.floor(Math.random() * (200 - 1) + 1)).subscribe(value =>
-        this.currentMovie = value.results[Math.floor(Math.random() * (20 - 1) + 1)]
+      this.currentMovie = value.results[Math.floor(Math.random() * (20 - 1) + 1)]
     )
   }
 
@@ -75,41 +75,47 @@ export class QuizzComponent implements OnInit {
     )
   }
 
-  //
-  answer(value: boolean): void {
-    if (this.currentPeople?.known_for.find(movie => movie.id === this.currentMovie?.id)) {
-      if (value) {
-
-        this.incrementScore()
-        this.pickNewGuess()
-        this.startTimer()
-      } else {
-        this.saveScoreAndLeave()
-      }
-    } else {
-      if (!value) {
-        this.incrementScore()
-        this.pickNewGuess()
-        this.startTimer()
-      } else {
-        this.saveScoreAndLeave()
-      }
-    }
+  // Check if the user answer is correct
+  submit(value: boolean): void {
+    const isAnActorOfMovie = this.currentPeople?.known_for.find(movie => movie.id === this.currentMovie?.id) != null
+    if (isAnActorOfMovie === value) {
+      this.incrementScore()
+      this.pickNewGuess()
+      this.timerSubscription?.unsubscribe()
+      this.startTimer()
+    } else
+      this.saveScoreAndLeave()
   }
 
   // Increase the score
   incrementScore() {
-    const score = localStorage.getItem('good_answer')
+    const score = localStorage.getItem('currentScore')
     if (score)
-      localStorage.setItem('good_answer', (parseInt(score.toString()) + 1).toString())
+      localStorage.setItem('currentScore', (parseInt(score.toString()) + 1).toString())
     else
-      localStorage.setItem('good_answer', '1')
+      localStorage.setItem('currentScore', '1')
   }
 
   // Save the last score in the leaderboard and return homepage
   saveScoreAndLeave() {
-    localStorage.setItem('tableauscore', 'le score good_answer')
-    localStorage.clear()
+    let scoreboardJSON = localStorage.getItem('scoreboardJSON')
+    let scoreboard = scoreboardJSON ? JSON.parse(scoreboardJSON) : [];
+
+    let currentScore = localStorage.getItem('currentScore')
+    if (currentScore) {
+      if (!scoreboard.includes(parseInt(currentScore.toString())))
+      scoreboard.push(parseInt(currentScore.toString()))
+    }
+
+    scoreboard.sort(function(a: number, b: number) {
+      return b - a;
+    });
+
+    if (scoreboard.length > 10)
+      scoreboard.pop()
+
+    localStorage.setItem('scoreboardJSON', JSON.stringify(scoreboard))
+    localStorage.removeItem('currentScore')
     this.router.navigate([''])
   }
 }

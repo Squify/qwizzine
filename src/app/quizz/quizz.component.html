@@ -12,14 +12,14 @@
   <div class="flex-row">
     <div style="width: 40%; padding-top: 16px; padding-bottom: 16px; ">
       <div class="round-time-bar bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-        <div class="h-2.5 rounded-full" style="width: {{timeLeft*100/counter}}%"></div>
+        <div class="h-2.5 rounded-full" style="width: {{timeLeft*100/counter}}%"></div> <!-- TODO -->
       </div>
     </div>
   </div>
 
   <div class="flex-row answer-buttons">
-    <app-action-button [answer]="false" (click)="answer(false)"></app-action-button>
-    <app-action-button [answer]="true" (click)="answer(true)"></app-action-button>
+    <app-action-button [answer]="false" (click)="submit(false)"></app-action-button>
+    <app-action-button [answer]="true" (click)="submit(true)"></app-action-button>
   </div>
 </section>
 
