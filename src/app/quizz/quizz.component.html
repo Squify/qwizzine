@@ -9,8 +9,12 @@
     </div>
   </div>
 
-  <div class="round-time-bar flex-row" style="--duration: 15;" data-style="smooth">
-    <div></div>
+  <div class="flex-row">
+    <div style="width: 40%; padding-top: 16px; padding-bottom: 16px; ">
+      <div class="round-time-bar bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+        <div class="h-2.5 rounded-full" style="width: {{timeLeft*100/counter}}%"></div>
+      </div>
+    </div>
   </div>
 
   <div class="flex-row answer-buttons">

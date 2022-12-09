@@ -24,26 +24,6 @@ html {
   font-weight: bold;
 }
 
-.round-time-bar div {
-
-  width: 50%;
-  height: 5px;
-  background: linear-gradient(to bottom, white, white);
-}
-
-@keyframes roundtime {
-  to {
-    /* More performant than animating `width` */
-    transform: scaleX(0);
-  }
-}
-
-.round-time-bar[data-style="smooth"] div {
-  animation: roundtime calc(var(--duration) * 1s) linear forwards;
-  transform-origin: left center;
-}
-
-
 .flex-row {
   display: flex;
   justify-content: center;

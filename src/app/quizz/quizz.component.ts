@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Movie} from "../interfaces/movie";
 import {MoviesService} from "../services/movies/movies.service";
 import {People} from "../interfaces/people";
+import {Router} from "@angular/router";
+import {timer} from "rxjs";
 
 @Component({
   selector: 'app-quizz',
@@ -15,68 +17,99 @@ export class QuizzComponent implements OnInit {
   peoples: People[] = []
   currentPeople: People | undefined;
 
-  counter = 15
+  counter: number = 15
+  timeLeft: number = 0
 
-  constructor(private moviesService: MoviesService) {
+  constructor(
+    private moviesService: MoviesService,
+    private router: Router
+  ) {
   }
 
   ngOnInit() {
-    this.getMovies()
-    this.getPeople()
-    localStorage.setItem('good_answer', '0')
+    this.pickNewGuess()
+    this.startTimer()
   }
 
-  getMovies(): void {
-    this.moviesService.getPopularMovies(1).subscribe(value => {
-        this.movies = value.results
-        this.pickRandomMovie()
-      },
-      error => console.log('oops')
-    )
-  }
-
-  pickRandomMovie(): void {
-    this.currentMovie = this.movies[Math.floor(Math.random() * (20 - 1) + 1)]
-  }
-
-  getPeople(): void {
-    this.moviesService.getPopularPeople(1).subscribe(value => {
-        this.peoples = value.results
-        this.pickRandomPeople()
-      },
-      error => console.log('oops')
-    )
-  }
-
-  pickRandomPeople(): void {
-    this.currentPeople = this.peoples[Math.floor(Math.random() * (20 - 1) + 1)]
-    console.log(this.currentPeople)
-  }
-
-  answer(value: boolean): void {
-    if (this.currentPeople?.known_for.find(e => e.id === this.currentMovie?.id)) {
-      if (value)
-        this.addPoint()
+  // Set a timer for a duration of n seconds
+  startTimer() {
+    timer(0, 1000).subscribe(n => {
+      if (n > this.counter)
+        console.log()
       else
-        localStorage.clear() //TODO: perdu
+        this.timeLeft = n
+    });
+  }
+
+  // Reset the actor and movie that are chose to be guessed
+  pickNewGuess() {
+    if (Math.floor(Math.random() * (3 - 1) + 1) === 1) {
+      this.getRandomPopularPeople()
+      this.getRandomPopularMovies()
     } else {
-      if (!value)
-        this.addPoint()
-      else
-        localStorage.clear()
+      this.getSpecificMovieByActor()
     }
-    console.log(localStorage.getItem('good_answer'))
   }
 
-  addPoint() {
+  // Chose a actor in a list of popular people
+  getRandomPopularPeople() {
+    this.moviesService.getPopularPeople(Math.floor(Math.random() * (200 - 1) + 1)).subscribe(value =>
+        this.currentPeople = value.results[Math.floor(Math.random() * (20 - 1) + 1)]
+    )
+  }
+
+  // Chose a movie in a list of popular movies
+  getRandomPopularMovies() {
+    this.moviesService.getPopularMovies(Math.floor(Math.random() * (200 - 1) + 1)).subscribe(value =>
+        this.currentMovie = value.results[Math.floor(Math.random() * (20 - 1) + 1)]
+    )
+  }
+
+  // Chose a specific movie after picking a random actor in a list of popular people
+  getSpecificMovieByActor() {
+    this.moviesService.getPopularPeople(Math.floor(Math.random() * (200 - 1) + 1)).subscribe(value => {
+        this.peoples = value.results
+        this.currentPeople = this.peoples[Math.floor(Math.random() * (20 - 1) + 1)]
+        this.currentMovie = this.currentPeople.known_for[0]
+      }
+    )
+  }
+
+  //
+  answer(value: boolean): void {
+    if (this.currentPeople?.known_for.find(movie => movie.id === this.currentMovie?.id)) {
+      if (value) {
+
+        this.incrementScore()
+        this.pickNewGuess()
+        this.startTimer()
+      } else {
+        this.saveScoreAndLeave()
+      }
+    } else {
+      if (!value) {
+        this.incrementScore()
+        this.pickNewGuess()
+        this.startTimer()
+      } else {
+        this.saveScoreAndLeave()
+      }
+    }
+  }
+
+  // Increase the score
+  incrementScore() {
     const score = localStorage.getItem('good_answer')
     if (score)
-      localStorage.setItem('good_answer', (this.localToScore(score) + 1).toString())
+      localStorage.setItem('good_answer', (parseInt(score.toString()) + 1).toString())
     else
       localStorage.setItem('good_answer', '1')
   }
 
-  localToScore(local: any): number {
-    return parseInt(local.toString())
+  // Save the last score in the leaderboard and return homepage
+  saveScoreAndLeave() {
+    localStorage.setItem('tableauscore', 'le score good_answer')
+    localStorage.clear()
+    this.router.navigate([''])
   }
 }

@@ -4,6 +4,8 @@ export interface People {
   profile_path: string,
   known_for: [{
     id: number,
-    title: string
+    title: string,
+    media_type: string,
+    poster_path: string
   }]
 }
