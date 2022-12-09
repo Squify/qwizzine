@@ -34,8 +34,11 @@ export class QuizzComponent implements OnInit {
   // Set a timer for a duration of n seconds
   startTimer() {
     this.timerSubscription = timer(0, 1000).subscribe(n => {
-      if (n > this.counter)
+      if (n > this.counter) {
+        this.timerSubscription?.unsubscribe()
+        alert("Le temps est écoulé !")
         this.saveScoreAndLeave()
+      }
       else
         this.timeLeft = n
     });
@@ -81,7 +84,6 @@ export class QuizzComponent implements OnInit {
     if (isAnActorOfMovie === value) {
       this.incrementScore()
       this.pickNewGuess()
-      this.timerSubscription?.unsubscribe()
       this.startTimer()
     } else
       this.saveScoreAndLeave()
