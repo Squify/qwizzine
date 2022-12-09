@@ -8,7 +8,6 @@ import {HomepageComponent} from './homepage/homepage.component';
 import {InfoCardComponent} from './components/info-card/info-card.component';
 import {ActionButtonComponent} from './components/action-button/action-button.component';
 import {HttpClientModule} from "@angular/common/http";
-import { TestComponent } from './test/test.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +16,6 @@ import { TestComponent } from './test/test.component';
     HomepageComponent,
     InfoCardComponent,
     ActionButtonComponent,
-    TestComponent,
   ],
   imports: [
     BrowserModule,

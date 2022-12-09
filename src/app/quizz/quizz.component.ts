@@ -104,10 +104,10 @@ export class QuizzComponent implements OnInit {
     let currentScore = localStorage.getItem('currentScore')
     if (currentScore) {
       if (!scoreboard.includes(parseInt(currentScore.toString())))
-      scoreboard.push(parseInt(currentScore.toString()))
+        scoreboard.push(parseInt(currentScore.toString()))
     }
 
-    scoreboard.sort(function(a: number, b: number) {
+    scoreboard.sort(function (a: number, b: number) {
       return b - a;
     });
 

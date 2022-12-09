@@ -1,12 +1,15 @@
 <section class="start-section">
-  <ul *ngIf="scoreboard.length > 0">
-    <li *ngFor="let score of scoreboard">{{ score }}</li>
-  </ul>
-
-  <div class="start-title"><h2>Testez votre culture cinématographique</h2></div>
-  <div class="start-button">
-    <button class="text-white py-2 px-4 rounded" routerLink="quizz">
-      Commencer
+    <h2 class="start-title">Testez votre culture cinématographique</h2>
+    <button class="start-button" routerLink="quizz">
+      <i class="fa fa-play" aria-hidden="true"></i>
     </button>
-  </div>
+</section>
+
+<section class="scoreboard">
+  <h3 class="score-title">Tableau des scores</h3>
+  <ul *ngIf="scoreboard.length > 0">
+    <li *ngFor="let score of scoreboard">
+      ⦿ {{ score }} points
+    </li>
+  </ul>
 </section>

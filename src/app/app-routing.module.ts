@@ -1,13 +1,11 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {QuizzComponent} from "./quizz/quizz.component";
 import {HomepageComponent} from "./homepage/homepage.component";
-import {TestComponent} from "./test/test.component";
 
 const routes: Routes = [
-  { path: 'quizz', component: QuizzComponent },
-  { path: 'test', component: TestComponent },
-  { path: '', component: HomepageComponent }
+  {path: 'quizz', component: QuizzComponent},
+  {path: '', component: HomepageComponent}
 ];
 
 @NgModule({
@@ -18,4 +16,5 @@ const routes: Routes = [
     RouterModule
   ]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}
