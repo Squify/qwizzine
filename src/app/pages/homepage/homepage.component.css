@@ -31,7 +31,7 @@
 
 .scoreboard {
   position: fixed;
-  top: 0;
+  bottom: 50%;
   padding: 15px;
 }
 

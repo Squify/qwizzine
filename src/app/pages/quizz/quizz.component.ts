@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Movie} from "../interfaces/movie";
-import {MoviesService} from "../services/movies/movies.service";
-import {People} from "../interfaces/people";
+import {Movie} from "../../interfaces/movie";
+import {MoviesService} from "../../services/movies/movies.service";
+import {People} from "../../interfaces/people";
 import {Router} from "@angular/router";
 import {Subscription, timer} from "rxjs";
 

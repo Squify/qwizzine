@@ -3,8 +3,8 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from "./app-routing.module";
-import {QuizzComponent} from './quizz/quizz.component';
-import {HomepageComponent} from './homepage/homepage.component';
+import {QuizzComponent} from './pages/quizz/quizz.component';
+import {HomepageComponent} from './pages/homepage/homepage.component';
 import {InfoCardComponent} from './components/info-card/info-card.component';
 import {ActionButtonComponent} from './components/action-button/action-button.component';
 import {HttpClientModule} from "@angular/common/http";
