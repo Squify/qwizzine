@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "dedeeddee": {
+    "qwizzine": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/dedeeddee",
+            "outputPath": "dist/qwizzine",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -60,10 +60,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "dedeeddee:build:production"
+              "browserTarget": "qwizzine:build:production"
             },
             "development": {
-              "browserTarget": "dedeeddee:build:development"
+              "browserTarget": "qwizzine:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -71,7 +71,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "dedeeddee:build"
+            "browserTarget": "qwizzine:build"
           }
         },
         "test": {

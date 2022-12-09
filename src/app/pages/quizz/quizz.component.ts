@@ -12,6 +12,8 @@ import {Subscription, timer} from "rxjs";
 })
 export class QuizzComponent implements OnInit {
 
+  score: string | null = null;
+
   peoples: People[] = []
   currentPeople: People | undefined;
   currentMovie: Movie | undefined;
@@ -33,11 +35,11 @@ export class QuizzComponent implements OnInit {
 
   // Set a timer for a duration of n seconds
   startTimer() {
+    this.timerSubscription?.unsubscribe()
     this.timerSubscription = timer(0, 1000).subscribe(n => {
       if (n > this.counter) {
-        this.timerSubscription?.unsubscribe()
-        alert("Le temps est écoulé !")
         this.saveScoreAndLeave()
+        alert("Le temps est écoulé !")
       }
       else
         this.timeLeft = n
@@ -96,10 +98,12 @@ export class QuizzComponent implements OnInit {
       localStorage.setItem('currentScore', (parseInt(score.toString()) + 1).toString())
     else
       localStorage.setItem('currentScore', '1')
+    this.score = localStorage.getItem('currentScore')
   }
 
   // Save the last score in the leaderboard and return homepage
   saveScoreAndLeave() {
+    this.timerSubscription?.unsubscribe()
     let scoreboardJSON = localStorage.getItem('scoreboardJSON')
     let scoreboard = scoreboardJSON ? JSON.parse(scoreboardJSON) : [];
 

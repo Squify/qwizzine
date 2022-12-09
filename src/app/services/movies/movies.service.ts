@@ -12,12 +12,10 @@ export class MoviesService {
   }
 
   getPopularMovies(pageId: number): Observable<any> {
-    const apiKey = environment.movie_db_api_key.toString()
-    return this.http.get('https://api.themoviedb.org/3/movie/popular?api_key=' + apiKey + '&language=fr-FR&page=' + pageId)
+    return this.http.get(environment.api_uri + '/movie/popular?api_key=' + environment.movie_db_api_key + '&language=fr-FR&page=' + pageId)
   }
 
   getPopularPeople(pageId: number): Observable<any> {
-    const apiKey = environment.movie_db_api_key.toString()
-    return this.http.get('https://api.themoviedb.org/3/person/popular?api_key=' + apiKey + '&language=fr-FR&page=' + pageId)
+    return this.http.get(environment.api_uri + '/person/popular?api_key=' + environment.movie_db_api_key + '&language=fr-FR&page=' + pageId)
   }
 }

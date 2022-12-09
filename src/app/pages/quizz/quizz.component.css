@@ -6,3 +6,13 @@
 .round-time-bar div {
   background: white;
 }
+
+.time-bar {
+  width: 40%;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.score {
+  padding-top: 10px;
+}
