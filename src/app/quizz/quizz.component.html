@@ -1,0 +1,21 @@
+<section class="quizz-section" *ngIf="currentPeople && currentMovie">
+  <div>
+    <div class="flex-row">
+      <app-info-card [image]="currentPeople.profile_path" [name]="currentPeople.name"></app-info-card>
+      <app-info-card [image]="currentMovie.poster_path" [name]="currentMovie.title"></app-info-card>
+    </div>
+    <div class="flex-row">
+      <h4 class="start-title">{{currentPeople.name}} </h4>&nbsp;a joué dans le film&nbsp;<h4 class="start-title"> {{currentMovie.title}}</h4>
+    </div>
+  </div>
+
+  <div class="round-time-bar flex-row" style="--duration: 15;" data-style="smooth">
+    <div></div>
+  </div>
+
+  <div class="flex-row answer-buttons">
+    <app-action-button [answer]="false" (click)="answer(false)"></app-action-button>
+    <app-action-button [answer]="true" (click)="answer(true)"></app-action-button>
+  </div>
+</section>
+
